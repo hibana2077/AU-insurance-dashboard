@@ -69,3 +69,44 @@ time_chart_data = time_chart_data.resample('QE').sum()
 fig = px.line(time_chart_data, x=time_chart_data.index, y='Gross written premium', title="毛保費時間序列圖 (百萬)")
 st.plotly_chart(fig)
 
+# Segment-wise Gross Written Premium
+st.subheader("業務類型毛保費貢獻")
+fig = px.bar(filtered_data, 
+             x='Segment', 
+             y='Gross written premium', 
+             color='Sub-segment', 
+             barmode='group',
+             title="主業務與子業務毛保費貢獻")
+st.plotly_chart(fig)
+
+# Profit/Loss by Sub-segment
+st.subheader("子業務稅後淨利/虧損")
+profit_sub_segment = filtered_data.groupby('Sub-segment')['Net profit/loss after tax'].sum().reset_index()
+fig = px.bar(profit_sub_segment, 
+             x='Sub-segment', 
+             y='Net profit/loss after tax', 
+             title="各子業務稅後淨利/虧損")
+st.plotly_chart(fig)
+
+# Time Series Chart by Sub-segment
+st.subheader("各子業務毛保費時間序列圖")
+time_chart_data = filtered_data.groupby(['Reporting date', 'Sub-segment'])['Gross written premium'].sum().reset_index()
+fig = px.line(time_chart_data, 
+              x='Reporting date', 
+              y='Gross written premium', 
+              color='Sub-segment', 
+              title="各子業務毛保費時間序列圖")
+st.plotly_chart(fig)
+
+# Segment-wise Profit/Loss Heatmap
+st.subheader("主業務與子業務的損益熱力圖")
+pivot_table = pd.pivot_table(filtered_data, 
+                             values='Net profit/loss after tax', 
+                             index='Segment', 
+                             columns='Sub-segment', 
+                             aggfunc='sum', 
+                             fill_value=0)
+fig = px.imshow(pivot_table, 
+                text_auto=True, 
+                title="主業務與子業務的損益熱力圖")
+st.plotly_chart(fig)

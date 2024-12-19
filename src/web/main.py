@@ -20,12 +20,15 @@ st.write(data.describe())
 st.sidebar.header("資料篩選")
 companies = st.sidebar.multiselect("選擇公司名稱", data['Company Name'].unique())
 segments = st.sidebar.multiselect("選擇業務類型 (Segment)", data['Segment'].unique())
+sub_segments = st.sidebar.multiselect("選擇子業務類型 (Sub-segment)", data['Sub-segment'].unique())
 
 filtered_data = data.copy()
 if companies:
     filtered_data = filtered_data[filtered_data['Company Name'].isin(companies)]
 if segments:
     filtered_data = filtered_data[filtered_data['Segment'].isin(segments)]
+if sub_segments:
+    filtered_data = filtered_data[filtered_data['Sub-segment'].isin(sub_segments)]
 
 st.header("篩選後的資料")
 st.write(filtered_data)
@@ -65,3 +68,4 @@ time_chart_data = time_chart_data.resample('QE').sum()
 
 fig = px.line(time_chart_data, x=time_chart_data.index, y='Gross written premium', title="毛保費時間序列圖 (百萬)")
 st.plotly_chart(fig)
+

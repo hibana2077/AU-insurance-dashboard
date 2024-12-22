@@ -36,6 +36,9 @@ with header_col:
 
 st.divider()
 
+if OPEN_API_KEY == "sk_test_1234567890":
+    st.warning("Please set your OpenAI API key in the environment variable OPENAI_API_KEY.")
+
 chat_tmp = init_chat_history()
 llm = ChatOpenAI(model="o1", api_key=OPEN_API_KEY)
 user_input = st.chat_input("Ask the AI Data Analysis Assistant a question.")

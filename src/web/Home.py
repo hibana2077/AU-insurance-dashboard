@@ -1,11 +1,17 @@
 import streamlit as st
 import pandas as pd
-# import matplotlib.pyplot as plt
+import numpy as np
+import requests
+import os
 from plotly import express as px
 
+API_URL = os.getenv("API_URL", "http://localhost:8081")
+
 # Load data
-file_path = 'revise.csv'
-data = pd.read_csv(file_path)
+# file_path = 'revise.csv'
+# data = pd.read_csv(file_path)
+data = requests.get(f"{API_URL}/data").json()
+data = pd.read_json(data, orient='table')
 
 # Page Title
 st.title("數據分析 Dashboard")
@@ -39,7 +45,7 @@ st.header("數據視覺化")
 # Gross Written Premium Distribution
 st.subheader("毛保費分佈")
 # format the data: 3,870 -> 3870
-filtered_data['Gross written premium'] = filtered_data['Gross written premium'].str.replace(',', '').astype(float)
+filtered_data['Gross written premium'] = filtered_data['Gross written premium']
 filtered_data['Gross written premium'].dropna().astype(float)
 fig = px.histogram(filtered_data, x='Gross written premium', nbins=20, title="毛保費分佈 (百萬)")
 st.plotly_chart(fig)

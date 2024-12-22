@@ -23,8 +23,6 @@ services:
       - ./backend:/app
     environment:
       HOST: "0.0.0.0"
-    depends_on:
-      - db
     networks:
       - mynet
 

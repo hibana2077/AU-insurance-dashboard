@@ -20,5 +20,6 @@ translators
 fastapi
 
 redis
-
+uvicorn
 python-multipart
+openpyxl

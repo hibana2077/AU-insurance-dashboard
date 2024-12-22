@@ -44,7 +44,7 @@ async def get_data():
     df_cleaned = df_table_1a.iloc[2:]
     df_cleaned.columns = df_table_1a.iloc[2]
     df_cleaned = df_cleaned.iloc[1:]
-    return JSONResponse(content=df_cleaned.to_json())
+    return JSONResponse(content=df_cleaned.to_json(orient='table'))
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=8081) # In docker need to change to 0.0.0.0
